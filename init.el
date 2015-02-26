@@ -1,11 +1,23 @@
 (require 'package)
 
+(setenv "PATH" (concat (getenv "PATH") ":~/bin"))
+(setq exec-path (append exec-path '("~/bin")))
+
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
+(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+
+(global-linum-mode 1)
+
 (package-initialize)
 
+
+;; Move between windows with shift+arrows
+(windmove-default-keybindings)
+
+;; Interactive Do-Things
 (require 'ido)
 (ido-mode t)
 
@@ -59,7 +71,8 @@
   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
 (require 'rainbow-delimiters)
-(global-rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
 
 (require 'clojure-mode)
 
@@ -72,3 +85,24 @@
   (HEAD 2)
   (ANY 2)
   (context 2))
+
+(defcustom arcadia-repl-command "ruby repl-client.rb"
+  "Command to use for the Arcadia REPL into Unity.")
+
+(defun arcadia-repl ()
+  "Start repl"
+  (interactive)
+  (run-lisp arcadia-repl-command))
+
+;; web-mode (ie. HTML templates eg. erb, php, etc.)
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+
+;; robe is for jump through ruby code
+(add-hook 'ruby-mode-hook 'robe-mode)
