@@ -106,3 +106,17 @@
 
 ;; robe is for jump through ruby code
 (add-hook 'ruby-mode-hook 'robe-mode)
+
+;; ruby-refactor
+(require 'ruby-refactor)
+(add-hook 'ruby-mode-hook 'ruby-refactor-mode-launch)
+
+(global-set-key (kbd "C-c r e") 'ruby-refactor-extract-to-method)
+(global-set-key (kbd "C-c r v") 'ruby-refactor-extract-local-variable)
+(global-set-key (kbd "C-c r c") 'ruby-refactor-extract-constant)
+(global-set-key (kbd "C-c r p") 'ruby-refactor-add-parameter)
+(global-set-key (kbd "C-c r l") 'ruby-refactor-extract-to-let)
+
+(require 'rvm)
+(rvm-use-default) ;; use rvm's default ruby for the current Emacs session
+
